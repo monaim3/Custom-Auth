@@ -58,23 +58,21 @@ export default function TodoItem({ todo, onEdit, onDeleteSuccess }: TodoItemProp
     });
   };
 
-  const handleDelete = async () => {
-    if (!window.confirm('Are you sure you want to delete this task?')) {
-      return;
-    }
-
-    setIsDeleting(true);
-    try {
-      await deleteTodo(todo.id);
-      toast.success('Task deleted successfully');
-      onDeleteSuccess();
-    } catch (error) {
-      toast.error('Failed to delete task');
-      console.error(error);
-    } finally {
-      setIsDeleting(false);
-    }
-  };
+const handleDelete = async () => {
+  toast.loading('Deleting task...', { id: 'delete-toast' });
+  
+  setIsDeleting(true);
+  try {
+    await deleteTodo(todo.id);
+    toast.success('Task deleted successfully', { id: 'delete-toast' });
+    onDeleteSuccess();
+  } catch (error) {
+    toast.error('Failed to delete task', { id: 'delete-toast' });
+    console.error(error);
+  } finally {
+    setIsDeleting(false);
+  }
+};
 
   return (
     <div

@@ -127,7 +127,7 @@ export default function ProfileForm() {
 
       toast.success('Profile updated successfully!');
       setNewImageFile(null);
-      fetchProfile(); // Refresh profile data
+      fetchProfile(); 
     } catch (error: any) {
       const errorMessage = error.response?.data?.message || 'Failed to update profile';
       toast.error(errorMessage);
@@ -156,8 +156,7 @@ export default function ProfileForm() {
   }
 
   return (
-    <div className="bg-white rounded-lg shadow-sm p-8 max-w-4xl">
-      {/* Header */}
+      <div className="bg-white rounded-lg shadow-sm p-8 max-w-4xl lg:mx-auto">
       <div className="mb-6">
         <h2 className="text-2xl font-bold text-[#1E293B] border-b-2 border-[#1E293B] inline-block pb-1">
           Account Information
@@ -165,7 +164,6 @@ export default function ProfileForm() {
       </div>
 
       <form onSubmit={handleSubmit}>
-        {/* Photo Upload Section */}
         <div className="mb-8 flex items-center space-x-6">
           <div className="relative">
             <div className="w-24 h-24 rounded-full bg-gray-300 overflow-hidden">
@@ -212,9 +210,7 @@ export default function ProfileForm() {
           />
         </div>
 
-        {/* Form Fields */}
         <div className="space-y-6">
-          {/* First Name and Last Name */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label
@@ -250,8 +246,6 @@ export default function ProfileForm() {
               />
             </div>
           </div>
-
-          {/* Email (Read-only) */}
           <div>
             <label
               htmlFor="email"
@@ -322,7 +316,6 @@ export default function ProfileForm() {
             />
           </div>
 
-          {/* Bio */}
           <div>
             <label
               htmlFor="bio"
@@ -340,8 +333,6 @@ export default function ProfileForm() {
             />
           </div>
         </div>
-
-        {/* Action Buttons */}
         <div className="flex justify-center space-x-4 mt-8">
           <button
             type="submit"

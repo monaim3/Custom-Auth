@@ -56,50 +56,99 @@ export default function TodoFormModal({ isOpen, onClose, onSuccess, todo }: Todo
     setFormData((prev) => ({ ...prev, priority }));
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  // const handleSubmit = async (e: React.FormEvent) => {
+  //   e.preventDefault();
 
-    if (!formData.title.trim()) {
-      toast.error('Please enter a task title');
-      return;
+  //   if (!formData.title.trim()) {
+  //     toast.error('Please enter a task title');
+  //     return;
+  //   }
+
+  //   setIsLoading(true);
+
+  //   try {
+  //     const todoData: any = {
+  //       title: formData.title.trim(),
+  //       description: formData.description.trim(),
+  //       priority: formData.priority,
+  //     };
+
+  //     // Only include todo_date if it has a value
+  //     if (formData.todo_date) {
+  //       todoData.todo_date = formData.todo_date;
+  //     }
+
+  //     if (isEditMode && todo) {
+  //       // Update existing todo
+  //       await updateTodo(todo.id, todoData);
+  //       toast.success('Task updated successfully!');
+  //     } else {
+  //       // Create new todo
+  //       await createTodo(todoData);
+  //       toast.success('Task created successfully!');
+  //     }
+      
+  //     setFormData({ title: '', todo_date: '', priority: 'moderate', description: '' });
+  //     onClose();
+  //     if (onSuccess) onSuccess();
+  //   } catch (error: any) {
+  //     const errorMessage = error.response?.data?.message || 
+  //       `Failed to ${isEditMode ? 'update' : 'create'} task`;
+  //     toast.error(errorMessage);
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
+const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+
+  if (!formData.title.trim()) {
+    toast.error('Please enter a task title');
+    return;
+  }
+
+  setIsLoading(true);
+
+  try {
+    const todoData: any = {
+      title: formData.title.trim(),
+      description: formData.description.trim(),
+      priority: formData.priority,
+    };
+    if (formData.todo_date) {
+      todoData.todo_date = formData.todo_date;
     }
 
-    setIsLoading(true);
-
-    try {
-      const todoData: any = {
-        title: formData.title.trim(),
-        description: formData.description.trim(),
-        priority: formData.priority,
-      };
-
-      // Only include todo_date if it has a value
-      if (formData.todo_date) {
-        todoData.todo_date = formData.todo_date;
-      }
-
-      if (isEditMode && todo) {
-        // Update existing todo
+    if (isEditMode && todo) {
+      try {
         await updateTodo(todo.id, todoData);
         toast.success('Task updated successfully!');
-      } else {
-        // Create new todo
-        await createTodo(todoData);
-        toast.success('Task created successfully!');
+      } catch (firstError: any) {
+        if (firstError.response?.status === 500) {
+          console.log('First update failed, retrying...');
+          await new Promise(resolve => setTimeout(resolve, 500));
+          await updateTodo(todo.id, todoData);
+          toast.success('Task updated successfully!');
+        } else {
+          throw firstError;
+        }
       }
-      
-      setFormData({ title: '', todo_date: '', priority: 'moderate', description: '' });
-      onClose();
-      if (onSuccess) onSuccess();
-    } catch (error: any) {
-      const errorMessage = error.response?.data?.message || 
-        `Failed to ${isEditMode ? 'update' : 'create'} task`;
-      toast.error(errorMessage);
-    } finally {
-      setIsLoading(false);
+    } else {
+      await createTodo(todoData);
+      toast.success('Task created successfully!');
     }
-  };
-
+    
+    setFormData({ title: '', todo_date: '', priority: 'moderate', description: '' });
+    onClose();
+    if (onSuccess) onSuccess();
+  } catch (error: any) {
+    const errorMessage = error.response?.data?.message || 
+      `Failed to ${isEditMode ? 'update' : 'create'} task`;
+    toast.error(errorMessage);
+  } finally {
+    setIsLoading(false);
+  }
+};
   const handleCancel = () => {
     setFormData({ title: '', todo_date: '', priority: 'moderate', description: '' });
     onClose();
