@@ -8,5 +8,6 @@ export interface User {
 
 export interface AuthResponse {
   access: string;
-  user: User;
+  refresh: string;
+  user?: User;
 }

@@ -1,9 +1,10 @@
 'use client';
-
+import Cookies from 'js-cookie';
 import { usePathname, useRouter } from 'next/navigation';
 import { Home, CheckSquare, User, LogOut } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
+import { getProfile } from '../lib/api/profile';
 
 export default function DashboardLayout({
   children,
@@ -16,34 +17,30 @@ export default function DashboardLayout({
 
   useEffect(() => {
     const token = localStorage.getItem('token');
+    console.log("dashboard token", token);
     if (!token) {
       router.push('/auth/login');
       return;
     }
     
     // Fetch user profile
-    fetchUserProfile();
   }, [router]);
-
+  useEffect(() => {
   const fetchUserProfile = async () => {
-    try {
-      const response = await fetch(`https://todo-app.pioneeralpha.com/api/users/me/`, {
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`,
-        },
-      });
-      
-      if (response.ok) {
-        const userData = await response.json();
-        setUser(userData);
-      }
-    } catch (error) {
-      console.error('Failed to fetch user profile:', error);
-    }
+    const data = await getProfile();
+    setUser(data);
   };
 
+  fetchUserProfile();
+}, []);
+
   const handleLogout = () => {
-    localStorage.removeItem('token');
+    // Remove tokens from localStorage
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('refresh_token');
+    
+    // Remove token from cookies
+    Cookies.remove('token');
     toast.success('Logged out successfully');
     router.push('/auth/login');
   };
