@@ -41,6 +41,7 @@ export default function ProfileForm() {
     setIsFetching(true);
     try {
       const userData = await getProfile();
+      console.log("User Data:", userData);
       const profileData = {
         first_name: userData.first_name,
         last_name: userData.last_name,
@@ -98,7 +99,6 @@ export default function ProfileForm() {
     setIsLoading(true);
 
     try {
-      // If there's a new image, use FormData
       if (newImageFile) {
         const formDataToSend = new FormData();
         formDataToSend.append('first_name', formData.first_name);
@@ -113,7 +113,6 @@ export default function ProfileForm() {
         setProfileImage(updatedUser.profile_image);
         setPreviewPhoto(updatedUser.profile_image);
       } else {
-        // Otherwise, send JSON
         const updateData = {
           first_name: formData.first_name,
           last_name: formData.last_name,
@@ -270,7 +269,6 @@ export default function ProfileForm() {
             />
           </div>
 
-          {/* Address and Contact Number */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label
@@ -307,7 +305,6 @@ export default function ProfileForm() {
             </div>
           </div>
 
-          {/* Birthday */}
           <div>
             <label
               htmlFor="birthday"

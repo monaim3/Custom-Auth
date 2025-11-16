@@ -235,20 +235,17 @@ export default function LoginForm() {
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
-  // Get redirect URL from query params
   const redirectUrl = searchParams.get('redirect') || '/dashboard';
 
   const validateForm = (): boolean => {
     const newErrors: ValidationErrors = {};
 
-    // Email validation
     if (!formData.email.trim()) {
       newErrors.email = 'Email is required.';
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
       newErrors.email = 'Please enter a valid email address.';
     }
 
-    // Password validation
     if (!formData.password) {
       newErrors.password = 'Password is required.';
     } else if (formData.password.length < 6) {
@@ -266,7 +263,6 @@ export default function LoginForm() {
       [name]: type === 'checkbox' ? checked : value,
     }));
 
-    // Clear error when user starts typing
     if (errors[name as keyof ValidationErrors]) {
       setErrors((prev) => ({ ...prev, [name]: undefined }));
     }
@@ -287,17 +283,13 @@ export default function LoginForm() {
 
       const response = await login(payload);
 
-      // Store access and refresh tokens
       localStorage.setItem('access_token', response.access);
       localStorage.setItem('refresh_token', response.refresh);
       
-      // Also store access token in cookies for middleware
-      Cookies.set('token', response.access, { expires: 7 }); // 7 days
+      Cookies.set('token', response.access, { expires: 7 }); 
 
-      // Show success message
       toast.success('Login successful!');
 
-      // Redirect to intended page or dashboard
       router.push(redirectUrl);
     } catch (error: any) {
       const errorMessage =
@@ -320,7 +312,6 @@ export default function LoginForm() {
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-5">
-        {/* Email */}
         <div>
           <label
             htmlFor="email"
@@ -344,7 +335,6 @@ export default function LoginForm() {
           )}
         </div>
 
-        {/* Password */}
         <div>
           <label
             htmlFor="password"
@@ -377,7 +367,6 @@ export default function LoginForm() {
           )}
         </div>
 
-        {/* Remember Me & Forgot Password */}
         <div className="flex items-center justify-between">
           <div className="flex items-center">
             <input
@@ -403,7 +392,6 @@ export default function LoginForm() {
           </Link>
         </div>
 
-        {/* Submit Button */}
         <button
           type="submit"
           disabled={isLoading}
@@ -412,7 +400,6 @@ export default function LoginForm() {
           {isLoading ? 'Logging in...' : 'Log in'}
         </button>
 
-        {/* Register Link */}
         <p className="text-center text-sm text-[#64748B] mt-6">
           Don't have an account?{' '}
           <Link

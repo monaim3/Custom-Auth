@@ -11,7 +11,7 @@ interface TodoFormModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSuccess?: () => void;
-  todo?: Todo | null; // If provided, it's edit mode
+  todo?: Todo | null; 
 }
 
 export default function TodoFormModal({ isOpen, onClose, onSuccess, todo }: TodoFormModalProps) {

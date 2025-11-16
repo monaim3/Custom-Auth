@@ -5,6 +5,7 @@ import { Home, CheckSquare, User, LogOut } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { getProfile } from '../lib/api/profile';
+import Header from '../components/layout/Header';
 
 export default function DashboardLayout({
   children,
@@ -23,7 +24,6 @@ export default function DashboardLayout({
       return;
     }
     
-    // Fetch user profile
   }, [router]);
   useEffect(() => {
   const fetchUserProfile = async () => {
@@ -35,11 +35,9 @@ export default function DashboardLayout({
 }, []);
 
   const handleLogout = () => {
-    // Remove tokens from localStorage
     localStorage.removeItem('access_token');
     localStorage.removeItem('refresh_token');
     
-    // Remove token from cookies
     Cookies.remove('token');
     toast.success('Logged out successfully');
     router.push('/auth/login');
@@ -65,9 +63,7 @@ export default function DashboardLayout({
 
   return (
     <div className="flex h-screen bg-[#F5F7FA]">
-      {/* Sidebar */}
       <aside className="w-64 bg-[#0D224A] text-white flex flex-col">
-        {/* User Profile Section */}
         <div className="p-6 flex flex-col items-center border-b border-[#1a3a6b]">
           <div className="w-20 h-20 rounded-full bg-gray-400 mb-3 overflow-hidden">
             {user?.profile_image ? (
@@ -111,7 +107,6 @@ export default function DashboardLayout({
           })}
         </nav>
 
-        {/* Logout Button */}
         <div className="p-4 border-t border-[#1a3a6b]">
           <button
             onClick={handleLogout}
@@ -123,8 +118,8 @@ export default function DashboardLayout({
         </div>
       </aside>
 
-      {/* Main Content */}
       <main className="flex-1 overflow-auto">
+        <Header />
         {children}
       </main>
     </div>

@@ -1,6 +1,5 @@
 'use client';
 
-import { Plus } from 'lucide-react';
 import TodoItem from './TodoItem';
 import {
     DndContext,
@@ -33,9 +32,7 @@ export default function TodoList({ todos, isLoading, onEdit, onDeleteSuccess }: 
     const [items, setItems] = useState<Todo[]>([]);
 
     useEffect(() => {
-        // Sort todos by position when they change
         const sortedTodos = [...todos].sort((a, b) => {
-            // Use position if available, otherwise use id
             const posA = a.position !== undefined ? a.position : a.id;
             const posB = b.position !== undefined ? b.position : b.id;
             return posA - posB;
@@ -66,13 +63,11 @@ export default function TodoList({ todos, isLoading, onEdit, onDeleteSuccess }: 
 
         const newItems = arrayMove(items, oldIndex, newIndex);
 
-        // Update positions in UI only
         const updatedItems = newItems.map((item, index) => ({
             ...item,
             position: index + 1,
         }));
 
-        // Update UI
         setItems(updatedItems);
         toast.success('Tasks reordered');
     };
@@ -87,24 +82,24 @@ export default function TodoList({ todos, isLoading, onEdit, onDeleteSuccess }: 
 
     if (items.length === 0) {
         return (
-           <div className="bg-white rounded-lg shadow-sm p-16 flex flex-col items-center justify-center">
-     <div className="relative mb-6">
-        <div className="relative w-40 h-40">
-            <Image
-                src="/icon-no-projects.png"
-                alt="No Projects"
-                fill
-                priority
-                className="object-contain"
-                sizes="200px"
-            />
-        </div>
+            <div className="bg-white rounded-lg shadow-sm p-16 flex flex-col items-center justify-center">
+                <div className="relative mb-6">
+                    <div className="relative w-40 h-40">
+                        <Image
+                            src="/icon-no-projects.png"
+                            alt="No Projects"
+                            fill
+                            priority
+                            className="object-contain"
+                            sizes="200px"
+                        />
+                    </div>
 
-    
-    </div>
 
-    <p className="text-xl font-medium text-[#64748B]">No todos yet</p>
-</div>
+                </div>
+
+                <p className="text-xl font-medium text-[#64748B]">No todos yet</p>
+            </div>
 
         );
     }

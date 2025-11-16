@@ -33,7 +33,3 @@ export const updateTodo = async (id: number, data: UpdateTodoDto): Promise<Todo>
 export const deleteTodo = async (id: number): Promise<void> => {
   await apiClient.delete(`/api/todos/${id}/`);
 };
-
-export const reorderTodos = async (todos: { id: number; position: number }[]): Promise<void> => {
-  await apiClient.post('/api/todos/reorder/', { todos });
-};
