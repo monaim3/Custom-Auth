@@ -1,5 +1,6 @@
 import { AuthResponse } from '@/app/types/auth';
 import apiClient from './axios';
+import Cookies from 'js-cookie';
 
 export interface SignupDto {
   firstName: string;
@@ -25,8 +26,7 @@ export const login = async (data: LoginDto): Promise<AuthResponse> => {
 
 export const logout = () => {
   if (typeof window !== 'undefined') {
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('refresh_token');
+        Cookies.remove('token');    
   }
 };
 

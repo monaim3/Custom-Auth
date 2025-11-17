@@ -1,4 +1,5 @@
 'use client';
+import Cookies from 'js-cookie';
 
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
@@ -7,8 +8,7 @@ export default function HomePage() {
   const router = useRouter();
 
   useEffect(() => {
-    const token = localStorage.getItem('access_token');
-    
+    const token = Cookies.get('token');
     if (token) {
       router.push('/dashboard');
     } else {

@@ -17,8 +17,7 @@ export default function DashboardLayout({
   const [user, setUser] = useState<any>(null);
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    console.log("dashboard token", token);
+    const token = Cookies.get('token');
     if (!token) {
       router.push('/auth/login');
       return;
@@ -35,9 +34,6 @@ export default function DashboardLayout({
 }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('refresh_token');
-    
     Cookies.remove('token');
     toast.success('Logged out successfully');
     router.push('/auth/login');

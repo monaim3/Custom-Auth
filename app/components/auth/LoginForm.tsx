@@ -278,6 +278,7 @@ function LoginFormContent() {
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
+    console.log("works")
     e.preventDefault();
 
     if (!validateForm()) return;
@@ -292,11 +293,8 @@ function LoginFormContent() {
 
       const response = await login(payload);
 
-      localStorage.setItem('access_token', response.access);
-      localStorage.setItem('refresh_token', response.refresh);
-      
-      Cookies.set('token', response.access, { expires: 7 }); 
-
+      Cookies.set('token', response.access);
+ 
       toast.success('Login successful!');
 
       router.push(redirectUrl);

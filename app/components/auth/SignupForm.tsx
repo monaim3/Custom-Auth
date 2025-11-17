@@ -99,7 +99,6 @@ export default function SignupForm() {
       };
       const response = await signup(payload);
 
-      localStorage.setItem('token', response.access);
       
       toast.success('Account created successfully!');
       
